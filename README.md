@@ -14,36 +14,36 @@ Ever wanted a custom crop area for the UIImagePickerController? Now you can have
 
 First create the GKImage picker:
 
-''Swift
+``Swift
     let picker = GKImagePicker.init()
     picker.delegate = self
-''
+``
 
 Specify your (starting) crop area:
 
-''
+``
 picker.cropSize = CGSize.init(width: 200, height: 200)
-''
+``
 
 Specify if the crop area can be resized:
 
-''
+``
 picker.hasResizeableCropArea = true
-''
+``
 
 Then you can present the picker, in a popover for instance: 
 
-''
+``
 picker.imagePickerController = UIImagePickerController.init()
 picker.imagePickerController!.modalPresentationStyle = .popover // or another presentation style
 self.present(self.picker.imagePickerController!, animated: true, completion: nil)
 if let popoverPresentationController = self.imagePicker.imagePickerController!.popoverPresentationController {
     popoverPresentationController.permittedArrowDirections = .up
     popoverPresentationController.barButtonItem = self.customBarButtonItem
-''
+``
 
 You need to implement the delegate, if you want to use the cropped image:
-''
+``
 extension YourViewController: GKImagePickerDelegate {
 
 func imagePicker(_ imagePicker: GKImagePicker, cropped image: UIImage) {
@@ -52,7 +52,7 @@ func imagePicker(_ imagePicker: GKImagePicker, cropped image: UIImage) {
 }
 
 }
-''
+`
 
 This code results into the following controller + crop area:
 
