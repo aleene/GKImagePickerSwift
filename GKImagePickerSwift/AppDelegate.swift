@@ -2,7 +2,11 @@
 //  AppDelegate.swift
 //  GKImagePickerSwift
 //
-//  Created by arnaud on 11/02/17.
+//
+//  Created by Georg Kitz on 6/1/12.
+//  Copyright (c) 2012 Aurora Apps. All rights reserved.
+//
+//  Translated in Swift 3.0 by arnaud on 12/02/17.
 //  Copyright © 2017 Hovering Above. All rights reserved.
 //
 

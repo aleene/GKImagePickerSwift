@@ -7,14 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5128A8571E50C32A0014ACFC /* GKImageCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5128A8561E50C32A0014ACFC /* GKImageCropViewController.swift */; };
+		5128A8591E50C4100014ACFC /* GKImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5128A8581E50C4100014ACFC /* GKImageCropView.swift */; };
+		5128A85B1E51DC290014ACFC /* GKImagePickerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5128A85A1E51DC290014ACFC /* GKImagePickerProtocol.swift */; };
+		5128A85D1E51DD650014ACFC /* GKImageCropControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5128A85C1E51DD650014ACFC /* GKImageCropControllerDelegate.swift */; };
+		5128A8611E55AB590014ACFC /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5128A8601E55AB580014ACFC /* ScrollView.swift */; };
 		51B11D361E4F89E700823630 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B11D351E4F89E700823630 /* AppDelegate.swift */; };
 		51B11D381E4F89E700823630 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B11D371E4F89E700823630 /* ViewController.swift */; };
 		51B11D3B1E4F89E700823630 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51B11D391E4F89E700823630 /* Main.storyboard */; };
 		51B11D3D1E4F89E700823630 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51B11D3C1E4F89E700823630 /* Assets.xcassets */; };
 		51B11D401E4F89E700823630 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51B11D3E1E4F89E700823630 /* LaunchScreen.storyboard */; };
+		51B11D481E4F8C3500823630 /* GKImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B11D471E4F8C3500823630 /* GKImagePicker.swift */; };
+		51B11D4A1E4F91BA00823630 /* GKCropBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B11D491E4F91BA00823630 /* GKCropBorderView.swift */; };
+		51B11D4C1E5094F400823630 /* GKImageCropOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B11D4B1E5094F400823630 /* GKImageCropOverlayView.swift */; };
+		51B11D4E1E50952400823630 /* GKResizableCropOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B11D4D1E50952400823630 /* GKResizableCropOverlayView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		512039DE1E59A55500BE62CB /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5128A8561E50C32A0014ACFC /* GKImageCropViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKImageCropViewController.swift; sourceTree = "<group>"; };
+		5128A8581E50C4100014ACFC /* GKImageCropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKImageCropView.swift; sourceTree = "<group>"; };
+		5128A85A1E51DC290014ACFC /* GKImagePickerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKImagePickerProtocol.swift; sourceTree = "<group>"; };
+		5128A85C1E51DD650014ACFC /* GKImageCropControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKImageCropControllerDelegate.swift; sourceTree = "<group>"; };
+		5128A8601E55AB580014ACFC /* ScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
 		51B11D321E4F89E600823630 /* GKImagePickerSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GKImagePickerSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51B11D351E4F89E700823630 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		51B11D371E4F89E700823630 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +37,10 @@
 		51B11D3C1E4F89E700823630 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		51B11D3F1E4F89E700823630 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		51B11D411E4F89E700823630 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51B11D471E4F8C3500823630 /* GKImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKImagePicker.swift; sourceTree = "<group>"; };
+		51B11D491E4F91BA00823630 /* GKCropBorderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKCropBorderView.swift; sourceTree = "<group>"; };
+		51B11D4B1E5094F400823630 /* GKImageCropOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKImageCropOverlayView.swift; sourceTree = "<group>"; };
+		51B11D4D1E50952400823630 /* GKResizableCropOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKResizableCropOverlayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,9 +54,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		512039E01E59AA5F00BE62CB /* GKImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				51B11D471E4F8C3500823630 /* GKImagePicker.swift */,
+				5128A85A1E51DC290014ACFC /* GKImagePickerProtocol.swift */,
+				5128A8561E50C32A0014ACFC /* GKImageCropViewController.swift */,
+				51B11D4B1E5094F400823630 /* GKImageCropOverlayView.swift */,
+				5128A8581E50C4100014ACFC /* GKImageCropView.swift */,
+				5128A8601E55AB580014ACFC /* ScrollView.swift */,
+				5128A85C1E51DD650014ACFC /* GKImageCropControllerDelegate.swift */,
+				51B11D491E4F91BA00823630 /* GKCropBorderView.swift */,
+				51B11D4D1E50952400823630 /* GKResizableCropOverlayView.swift */,
+			);
+			name = GKImagePicker;
+			sourceTree = "<group>";
+		};
 		51B11D291E4F89E600823630 = {
 			isa = PBXGroup;
 			children = (
+				512039DE1E59A55500BE62CB /* README.md */,
 				51B11D341E4F89E600823630 /* GKImagePickerSwift */,
 				51B11D331E4F89E600823630 /* Products */,
 			);
@@ -56,6 +92,7 @@
 			children = (
 				51B11D351E4F89E700823630 /* AppDelegate.swift */,
 				51B11D371E4F89E700823630 /* ViewController.swift */,
+				512039E01E59AA5F00BE62CB /* GKImagePicker */,
 				51B11D391E4F89E700823630 /* Main.storyboard */,
 				51B11D3C1E4F89E700823630 /* Assets.xcassets */,
 				51B11D3E1E4F89E700823630 /* LaunchScreen.storyboard */,
@@ -137,7 +174,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5128A85D1E51DD650014ACFC /* GKImageCropControllerDelegate.swift in Sources */,
+				5128A8611E55AB590014ACFC /* ScrollView.swift in Sources */,
+				5128A8571E50C32A0014ACFC /* GKImageCropViewController.swift in Sources */,
+				5128A85B1E51DC290014ACFC /* GKImagePickerProtocol.swift in Sources */,
+				51B11D4A1E4F91BA00823630 /* GKCropBorderView.swift in Sources */,
 				51B11D381E4F89E700823630 /* ViewController.swift in Sources */,
+				51B11D481E4F8C3500823630 /* GKImagePicker.swift in Sources */,
+				5128A8591E50C4100014ACFC /* GKImageCropView.swift in Sources */,
+				51B11D4C1E5094F400823630 /* GKImageCropOverlayView.swift in Sources */,
+				51B11D4E1E50952400823630 /* GKResizableCropOverlayView.swift in Sources */,
 				51B11D361E4F89E700823630 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,6 +348,7 @@
 				51B11D461E4F89E700823630 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
