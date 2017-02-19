@@ -13,19 +13,26 @@ Ever wanted a custom crop area for the UIImagePickerController? Now you can have
 ### Sample Code
 
 First create the GKImage picker:
+
 ''Swift
     let picker = GKImagePicker.init()
     picker.delegate = self
 ''
+
 Specify your (starting) crop area:
-''Swift
+
+''
 picker.cropSize = CGSize.init(width: 200, height: 200)
 ''
-Specify if you want a resizable crop area:
-''Swift
+
+Specify if the crop area can be resized:
+
+''
 picker.hasResizeableCropArea = true
 ''
-Then you can present the picker, in a popOver for instance: 
+
+Then you can present the picker, in a popover for instance: 
+
 ''
 picker.imagePickerController = UIImagePickerController.init()
 picker.imagePickerController!.modalPresentationStyle = .popover // or another presentation style
@@ -40,9 +47,7 @@ You need to implement the delegate, if you want to use the cropped image:
 extension YourViewController: GKImagePickerDelegate {
 
 func imagePicker(_ imagePicker: GKImagePicker, cropped image: UIImage) {
-
     self.image = image // save the cropped image
-
     self.imagePicker.imagePickerController!.dismiss(animated: true, completion: nil) // dismiss the controller
 }
 
@@ -51,12 +56,10 @@ func imagePicker(_ imagePicker: GKImagePicker, cropped image: UIImage) {
 
 This code results into the following controller + crop area:
 
-![Sample Crop Image](https://dl.dropbox.com/u/311618/GKImageCrop/IMG_1509.PNG)
 
 It's even possible to let the user adjust the crop area (thanks to [@pathonhauser](http://www.twitter.com/pathonhauser) for this pull request) by setting one additional property:
 	     
 This code results into the following controller + adjustable crop area:
-![Sample Crop Image Adjustable](https://dl.dropbox.com/u/311618/GKImageCrop/IMG_2299.PNG)
 ### License
 Under MIT. See license file for details.
 
