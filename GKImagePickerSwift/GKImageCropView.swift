@@ -11,9 +11,8 @@
 //
 
 import UIKit
-// import QuartzCore
 
-class GKImageCropView: UIView, UIScrollViewDelegate {
+class GKImageCropView: UIView {
     
     private func rad(_ angle: CGFloat) -> CGFloat {
         return angle / CGFloat(180.0) * CGFloat(M_PI)
@@ -28,21 +27,22 @@ class GKImageCropView: UIView, UIScrollViewDelegate {
     
     lazy var scrollView: ScrollView = {
         let view = ScrollView.init()
-        view.showsHorizontalScrollIndicator = true
-        view.showsVerticalScrollIndicator = true
-        view.clipsToBounds = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        // view.clipsToBounds = true
         view.decelerationRate = 0.0
         view.backgroundColor = UIColor.clear
         view.maximumZoomScale = 20.0
-        view.setZoomScale(1.0, animated: true)
-
+        view.minimumZoomScale = 0.1
+        view.zoomScale = 1.0
+        view.delegate = self
         return view
     } ()
     
     lazy var imageView: UIImageView = {
         let view = UIImageView.init()
-        view.contentMode = .scaleAspectFit
-        view.backgroundColor = .black
+        // view.contentMode = .scaleAspectFit
+        // view.backgroundColor = .black
         
         return view
 
@@ -61,15 +61,10 @@ class GKImageCropView: UIView, UIScrollViewDelegate {
         }
     }
 
-    var cropSize: CGSize? {
+    var cropSize: CGSize = CGSize.zero {
         didSet {
-            if hasResizableCropArea {
-                self.cropOverlayView = GKResizeableCropOverlayView.init(frame: self.bounds)
-                self.cropOverlayView?.initialSize = self.cropSize!
-            } else {
-                self.cropOverlayView = GKImageCropOverlayView.init(frame: self.bounds)
-            }
-            self.cropOverlayView?.cropSize = self.cropSize
+            self.cropOverlayView = hasResizableCropArea ? GKResizeableCropOverlayView.init(frame: self.bounds) : GKImageCropOverlayView.init(frame: self.bounds)
+            self.cropOverlayView?.initialCropSize = self.cropSize
             addSubview(self.cropOverlayView!)
             self.layoutSubViews()
         }
@@ -78,13 +73,10 @@ class GKImageCropView: UIView, UIScrollViewDelegate {
     // MARK: - Public Methods
     
     func croppedImage() -> UIImage? {
-        let image = self.imageToCrop
-
         //Calculate rect that needs to be cropped
-        var visibleRect = self.hasResizableCropArea ? _calcVisibleRectForResizeableCropArea() : _calcVisibleRectForCropArea()
-    
+        var visibleRect = calcCropArea()
         //transform visible rect to image orientation
-        let rectTransform: CGAffineTransform = _orientationTransformedRectOfImage(img: image!)
+        let rectTransform: CGAffineTransform = _orientationTransformedRectOfImage(img: self.imageToCrop!)
         
         visibleRect = visibleRect.applying(rectTransform)
     
@@ -96,6 +88,18 @@ class GKImageCropView: UIView, UIScrollViewDelegate {
         }
     }
     
+    private func calcCropArea() -> CGRect {
+        var sizeScale = self.imageView.image!.size.width / self.imageView.frame.size.width
+        sizeScale *= self.scrollView.zoomScale
+        
+        //then get the position of the cropping rect inside the image
+        print(cropOverlayView?.frame, cropOverlayView?.contentView.frame)
+        let visibleRect = self.cropOverlayView?.contentView.convert(self.cropOverlayView!.contentView.bounds, to: imageView)
+        let rect = GKScaleRect(rect: visibleRect!, scale: sizeScale)
+        return rect
+    }
+    
+    /*
     private func _calcVisibleRectForResizeableCropArea() -> CGRect {
         if let resizableView = cropOverlayView as? GKResizeableCropOverlayView {
     
@@ -114,12 +118,12 @@ class GKImageCropView: UIView, UIScrollViewDelegate {
     
     private func _calcVisibleRectForCropArea() -> CGRect {
     //scaled width/height in regards of real width to crop width
-        if let validImageToCrop = imageToCrop {
-            let scaleWidth = validImageToCrop.size.width / cropSize!.width
-            let scaleHeight = validImageToCrop.size.height / cropSize!.height
+        if let validImageToCrop = self.imageToCrop {
+            let scaleWidth = validImageToCrop.size.width / self.cropSize.width
+            let scaleHeight = validImageToCrop.size.height / self.cropSize.height
             var scale = CGFloat(0.0)
     
-            if validImageToCrop.size.width > validImageToCrop.size.height {
+            if self.cropSize.width > self.cropSize.height {
                 scale = validImageToCrop.size.width < validImageToCrop.size.height ?
                     max(scaleWidth, scaleHeight) :
                     min(scaleWidth, scaleHeight);
@@ -135,6 +139,7 @@ class GKImageCropView: UIView, UIScrollViewDelegate {
         }
         return CGRect.zero
     }
+     */
     
     
     private func _orientationTransformedRectOfImage(img: UIImage) -> CGAffineTransform {
@@ -160,16 +165,9 @@ class GKImageCropView: UIView, UIScrollViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        isUserInteractionEnabled = true
-        backgroundColor = UIColor.black
-        
-        self.scrollView.frame = self.bounds
-        self.scrollView.delegate = self
-        addSubview(scrollView)
-    
+        self.isUserInteractionEnabled = true
+        self.addSubview(scrollView)
         self.scrollView.addSubview(imageView)
-    
-        self.scrollView.minimumZoomScale = scrollView.frame.width / imageView.frame.width
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -206,38 +204,52 @@ class GKImageCropView: UIView, UIScrollViewDelegate {
     
     func layoutSubViews() {
         super.layoutSubviews()
-        // guard imageToCrop != nil && cropSize != nil else { return }
         
-        let toolbarSize = UIDevice.current.userInterfaceIdiom == .pad ? CGFloat(0.0) : CGFloat(54.0)
-        xOffset = floor((self.bounds.width - cropSize!.width) * 0.5)
-        yOffset = floor((self.bounds.height - toolbarSize - cropSize!.height) * 0.5); //fixed
-            
-        let height = imageToCrop!.size.height
-        let width = imageToCrop!.size.width
-            
+        // This fits the image into the crop area
+        let toolbarHeight = UIDevice.current.userInterfaceIdiom == .pad ? CGFloat(44.0) : CGFloat(54.0)
+        
+        
         var faktor = CGFloat(0.0)
         var faktoredHeight = CGFloat(0.0)
         var faktoredWidth = CGFloat(0.0)
-            
-        if width > height {
-            faktor = width / cropSize!.width;
-            faktoredWidth = cropSize!.width;
-            faktoredHeight =  height / faktor;
+        
+        // print("cropSize", cropSize, imageToCrop!.size)
+        if self.imageToCrop!.size.width > self.imageToCrop!.size.height {
+            faktor = self.imageToCrop!.size.width / self.bounds.width;
+            faktoredWidth = self.bounds.width
+            faktoredHeight =  self.imageToCrop!.size.height / faktor
+            self.yOffset = toolbarHeight  // ( faktoredHeight - self.scrollView.bounds.size.height ) / 2
+
         } else {
-            faktor = height / cropSize!.height;
-            faktoredWidth = width / faktor;
-            faktoredHeight =  cropSize!.height;
+            faktor = self.imageToCrop!.size.height / ( self.bounds.height - toolbarHeight )
+            faktoredWidth = self.imageToCrop!.size.width / faktor
+            faktoredHeight =  self.bounds.height - toolbarHeight
+            self.yOffset = toolbarHeight // ( faktoredHeight - self.scrollView.bounds.size.height ) / 2
         }
-            
-        cropOverlayView?.frame = self.bounds;
-        scrollView.frame = CGRect.init(x: xOffset, y: yOffset, width: cropSize!.width, height: cropSize!.height)
-        scrollView.contentSize = imageView.bounds.size // CGSize.init(width: cropSize!.width, height: cropSize!.height)
-        scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 4.0
-        scrollView.zoomScale = 1.0
-        imageView.frame = CGRect.init(x: 0, y: floor((cropSize!.height - faktoredHeight) * 0.5), width: faktoredWidth, height: faktoredHeight)
+ 
+
+        self.cropOverlayView?.frame = self.bounds // do NOT correct for the toolbar, it will be done in the class
+        // the scrollView is the size of the visible view
+        self.scrollView.frame = CGRect.init(x: 0, y: toolbarHeight, width: self.bounds.width, height: self.bounds.height - toolbarHeight) // CGRect.init(x: self.xOffset, y: self.yOffset, width: cropSize.width, height: cropSize.height)
+        // the scrollView content size is the size of the image
+        self.scrollView.contentSize = imageView.image!.size // CGSize.init(width: self.cropSize.width, height: self.cropSize.height)
+        // The image should fit the scrollview (aspectFit)
+        self.xOffset = 0 // ( faktoredWidth - self.scrollView.bounds.size.width ) / 2
+        self.imageView.frame = CGRect.init(x: 0, y: 0, width: faktoredWidth, height: faktoredHeight)
+        // move the content of the scrollView, so the image is centered in the window
+        self.scrollView.contentOffset = CGPoint.init(x: self.xOffset, y: self.yOffset)
+        // print("offset",xOffset,yOffset)
+        // print("scroll",scrollView.frame, scrollView.bounds)
+        // print("image",imageView.frame,imageView.bounds)
+        // If this is not set the app will crash upon pinch
+        self.scrollView.minimumZoomScale = 1 // scrollView.frame.width / imageView.frame.width
     }
     
+    
+}
+
+extension GKImageCropView: UIScrollViewDelegate {
+
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }

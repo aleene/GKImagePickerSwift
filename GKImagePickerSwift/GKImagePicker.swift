@@ -18,7 +18,7 @@ open class GKImagePicker: NSObject {
     var imagePickerController: UIImagePickerController? = nil {
         didSet {
             self.imagePickerController?.delegate = self
-            // self.imagePickerController?.sourceType = .photoLibrary
+            self.imagePickerController?.sourceType = sourceType
         }
     }
 
@@ -26,8 +26,13 @@ open class GKImagePicker: NSObject {
     
     var delegate: GKImagePickerDelegate? = nil
     
+    var sourceType: UIImagePickerControllerSourceType = .photoLibrary {
+        didSet {
+            self.imagePickerController?.sourceType = sourceType
+        }
+    }
     var hasResizeableCropArea = false
-    
+        
     func dismiss(animated: Bool, completion: (() -> Void)?) {
             imagePickerController?.dismiss(animated: animated, completion: nil)
     }
@@ -50,28 +55,31 @@ extension GKImagePicker: UIImagePickerControllerDelegate, UINavigationController
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         delegate?.imagePickerDidCancel(self)
-        picker.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: false, completion: nil)
     }
     
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        var image = info[UIImagePickerControllerEditedImage] as? UIImage
-        if image == nil {
-            image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        func setImage(image: UIImage) {
+            let cropController = GKImageCropViewController.init()
+            cropController.sourceImage = image
+            cropController.view.frame = self.imagePickerController!.view!.bounds
+            cropController.preferredContentSize = picker.preferredContentSize
+            cropController.hasResizableCropArea = self.hasResizeableCropArea
+            cropController.cropSize = self.cropSize
+            cropController.delegate = self
+            
+            picker.pushViewController(cropController, animated: false)
         }
         
-        if image != nil {
-            let cropController = GKImageCropViewController.init()
-            
-            cropController.view.frame = self.imagePickerController!.view!.bounds
-            // cropController.preferredContentSize = picker.preferredContentSize;
-            cropController.sourceImage = image
-            cropController.hasResizableCropArea = self.hasResizeableCropArea;
-            cropController.cropSize = self.cropSize;
-            cropController.delegate = self;
-
-            picker.pushViewController(cropController, animated: true)
+        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+            setImage(image: image)
+        } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            setImage(image: image)
+        } else {
+            print("error in imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])")
         }
+        
     }
 
 }

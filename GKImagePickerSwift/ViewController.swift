@@ -62,6 +62,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         picker.delegate = self
         picker.imagePickerController = UIImagePickerController.init()
         picker.imagePickerController!.modalPresentationStyle = .popover
+        picker.sourceType = .photoLibrary
 
         return picker
     }()
@@ -108,8 +109,6 @@ extension ViewController: UIImagePickerControllerDelegate {
         picker.dismiss(animated: true, completion: nil)
     }
 }
-
-// TODO is this needed? For the iPhone, in order to have no black background in the popOvers
  
 // MARK: - UIPopoverPresentationControllerDelegate Functions
 

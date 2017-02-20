@@ -31,8 +31,9 @@ if let popoverPresentationController = self.imagePicker.imagePickerController!.p
     popoverPresentationController.permittedArrowDirections = .up
     popoverPresentationController.barButtonItem = self.customBarButtonItem
 ```
+You get the possibility to select an image from the photo library.
 
-You need to implement the delegate, if you want to use the cropped image:
+You need to implement this delegate, if you want to use the cropped image:
 ```swift
 extension YourViewController: GKImagePickerDelegate {
 
@@ -40,9 +41,8 @@ func imagePicker(_ imagePicker: GKImagePicker, cropped image: UIImage) {
     self.image = image // save the cropped image
     self.imagePicker.imagePickerController!.dismiss(animated: true, completion: nil) // dismiss the controller
 }
-
 }
-``
+```
 
 ### History
 This library is based on [GKImagePicker](https://github.com/gekitz/GKImagePicker)

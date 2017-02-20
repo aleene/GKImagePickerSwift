@@ -60,12 +60,12 @@
 				51B11D471E4F8C3500823630 /* GKImagePicker.swift */,
 				5128A85A1E51DC290014ACFC /* GKImagePickerProtocol.swift */,
 				5128A8561E50C32A0014ACFC /* GKImageCropViewController.swift */,
-				51B11D4B1E5094F400823630 /* GKImageCropOverlayView.swift */,
+				5128A85C1E51DD650014ACFC /* GKImageCropControllerDelegate.swift */,
 				5128A8581E50C4100014ACFC /* GKImageCropView.swift */,
 				5128A8601E55AB580014ACFC /* ScrollView.swift */,
-				5128A85C1E51DD650014ACFC /* GKImageCropControllerDelegate.swift */,
-				51B11D491E4F91BA00823630 /* GKCropBorderView.swift */,
+				51B11D4B1E5094F400823630 /* GKImageCropOverlayView.swift */,
 				51B11D4D1E50952400823630 /* GKResizableCropOverlayView.swift */,
+				51B11D491E4F91BA00823630 /* GKCropBorderView.swift */,
 			);
 			name = GKImagePicker;
 			sourceTree = "<group>";

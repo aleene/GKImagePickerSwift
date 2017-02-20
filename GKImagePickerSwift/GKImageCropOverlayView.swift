@@ -13,13 +13,14 @@
 import Foundation
 import UIKit
 
-class GKImageCropOverlayView: UIView {
+// This class handles touch input on the overlay for the crop area
+// It creates a clear pane through which the image is seen
 
-    // var toolbar: UIToolbar? = nil
+class GKImageCropOverlayView: UIView {
     
     // MARK: - Getter/Setter
     
-    var cropSize: CGSize? = CGSize.zero
+    var cropSize: CGSize = CGSize.zero
     
     // MARK: - Getter/Setter
     
@@ -28,13 +29,40 @@ class GKImageCropOverlayView: UIView {
         
         self.backgroundColor = .clear
         self.isUserInteractionEnabled = true
+        self.addSubview(self.contentView)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    var initialSize: CGSize = CGSize.init(width: 200, height: 200)
+    var toolbarSize: CGFloat {
+        get {
+            return UIDevice.current.userInterfaceIdiom == .pad ? CGFloat(44.0) : CGFloat(54.0)
+        }
+    }
+
+    var contentViewFrame: CGRect {
+        get {
+            return CGRect.init(
+                x: self.bounds.size.width / 2 - self.initialCropSize.width  / 2,
+                y: (self.bounds.size.height - self.toolbarSize) / 2 - self.initialCropSize.height / 2,
+                width: self.initialCropSize.width,
+                height: self.initialCropSize.height)
+        }
+    }
+
+    var contentView: UIView = {
+        return UIView.init(frame: CGRect.zero)
+    } ()
+    
+
+    var initialCropSize: CGSize = CGSize.zero {
+        didSet {
+            contentView.frame = contentViewFrame
+            cropSize = initialCropSize
+        }
+    }
     
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -44,10 +72,9 @@ class GKImageCropOverlayView: UIView {
         
         let width = frame.width
         let height = frame.height - toolbarSize
-        let cropSizeToUse = cropSize != nil ? cropSize! : frame.size
         
-        let heightSpan = CGFloat(floor(height / 2 - cropSizeToUse.height / 2))
-        let widthSpan = CGFloat(floor(width / 2 - cropSizeToUse.width / 2))
+        let heightSpan = CGFloat(floor(height / 2 - cropSize.height / 2))
+        let widthSpan = CGFloat(floor(width / 2 - cropSize.width / 2))
         
         //fill outer rect
         UIColor.init(colorLiteralRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.5).set()
@@ -55,19 +82,19 @@ class GKImageCropOverlayView: UIView {
         
         //fill inner border
         UIColor.init(colorLiteralRed: 1.0, green: 1.0, blue: 1.0, alpha: 0.5).set()
-        UIRectFrame(CGRect.init(x: widthSpan - 2, y: heightSpan - 2, width: cropSizeToUse.width + 4, height: cropSizeToUse.height + 4))
+        UIRectFrame(CGRect.init(x: widthSpan - 2, y: heightSpan - 2, width: cropSize.width + 4, height: cropSize.height + 4))
         
         //fill inner rect
         UIColor.clear.set()
-        UIRectFill(CGRect.init(x: widthSpan, y: heightSpan, width: cropSizeToUse.width, height: cropSizeToUse.height))
+        UIRectFill(CGRect.init(x: widthSpan, y: heightSpan, width: cropSize.width, height: cropSize.height))
         
         
 // if heightSpan > 30 && (UIDevice.current.userInterfaceIdiom == .pad) {
-            UIColor.white.set()
+            // UIColor.white.set()
             
-            let stringToDraw = NSLocalizedString("Move and scale", comment: "GKIMoveAndScale") as NSString
-            stringToDraw.draw(in: CGRect.init(x: 10.0, y: (height - heightSpan) + (heightSpan / 2 - CGFloat(20.0) / 2), width: width - CGFloat(20.0), height: 20.0),
-                              withAttributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20.0)] )
+            // let stringToDraw = NSLocalizedString("Move and scale", comment: "GKIMoveAndScale") as NSString
+            // stringToDraw.draw(in: CGRect.init(x: 10.0, y: (height - heightSpan) + (heightSpan / 2 - CGFloat(20.0) / 2), width: width - CGFloat(20.0), height: 20.0),
+            //                  withAttributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20.0)] )
                                 // , NSLineBreakMode: .byTruncatingTail])
             
             //[NSLocalizedString(@"GKImoveAndScale", @"") drawInRect:CGRectMake(10, (height - heightSpan) + (heightSpan / 2 - 20 / 2) , width - 20, 20)

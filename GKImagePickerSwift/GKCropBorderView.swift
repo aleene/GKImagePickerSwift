@@ -15,6 +15,8 @@ import UIKit
 
 class GKCropBorderView: UIView {
     
+// This class draws the resizable border with its handles
+    
     private struct Constant {
         static let kNumberOfBorderHandles = 8
         static let kHandleDiameter = 24
@@ -58,21 +60,45 @@ class GKCropBorderView: UIView {
     
     // MARK: - private
     
-    func calculateAllNeededHandleRects() -> [CGRect] {
+    private func calculateAllNeededHandleRects() -> [CGRect] {
     
         var a: [CGRect] = []
 
-        a.append(CGRect.init(x: 0, y: 0, width: Constant.kHandleDiameter, height: Constant.kHandleDiameter))
-        a.append(CGRect.init(x: Int(self.frame.size.width / 2), y: 0, width: Constant.kHandleDiameter, height: Constant.kHandleDiameter))
-        a.append(CGRect.init(x: Int(self.frame.size.width) - Constant.kHandleDiameter, y: 0, width: Constant.kHandleDiameter, height: Constant.kHandleDiameter))
+        // upper row
+        a.append(CGRect.init(x: 0,
+                             y: 0,
+                             width: Constant.kHandleDiameter,
+                             height: Constant.kHandleDiameter) )
+        a.append(CGRect.init(x: Int(self.frame.size.width / 2) - Constant.kHandleDiameter / 2,
+                             y: 0,
+                             width: Constant.kHandleDiameter,
+                             height: Constant.kHandleDiameter))
+        a.append(CGRect.init(x: Int(self.frame.size.width) - Constant.kHandleDiameter,
+                             y: 0,
+                             width: Constant.kHandleDiameter,
+                             height: Constant.kHandleDiameter) )
     
-        //upper row done
-        a.append(CGRect.init(x: Int(self.frame.size.width) - Constant.kHandleDiameter, y: Int(self.frame.size.height / 2) - Constant.kHandleDiameter / 2, width: Constant.kHandleDiameter, height: Constant.kHandleDiameter))
-        a.append(CGRect.init(x: Int(self.frame.size.width) - Constant.kHandleDiameter, y: Int(self.frame.size.height) - Constant.kHandleDiameter, width: Constant.kHandleDiameter, height: Constant.kHandleDiameter))
-        a.append(CGRect.init(x: Int(self.frame.size.width / 2) - Constant.kHandleDiameter / 2, y: Int(self.frame.size.height) - Constant.kHandleDiameter, width: Constant.kHandleDiameter, height: Constant.kHandleDiameter))
-        a.append(CGRect.init(x: 0, y: Int(self.frame.size.height) - Constant.kHandleDiameter, width: Constant.kHandleDiameter, height: Constant.kHandleDiameter))
+        a.append(CGRect.init(x: Int(self.frame.size.width) - Constant.kHandleDiameter,
+                             y: Int(self.frame.size.height / 2) - Constant.kHandleDiameter / 2,
+                             width: Constant.kHandleDiameter,
+                             height: Constant.kHandleDiameter))
+        a.append(CGRect.init(x: Int(self.frame.size.width) - Constant.kHandleDiameter,
+                             y: Int(self.frame.size.height) - Constant.kHandleDiameter,
+                             width: Constant.kHandleDiameter,
+                             height: Constant.kHandleDiameter) )
+        a.append(CGRect.init(x: Int(self.frame.size.width / 2) - Constant.kHandleDiameter / 2,
+                             y: Int(self.frame.size.height) - Constant.kHandleDiameter,
+                             width: Constant.kHandleDiameter,
+                             height: Constant.kHandleDiameter) )
+        a.append(CGRect.init(x: 0,
+                             y: Int(self.frame.size.height) - Constant.kHandleDiameter,
+                             width: Constant.kHandleDiameter,
+                             height: Constant.kHandleDiameter) )
         //now back up again
-        a.append(CGRect.init(x: 0, y: Int(self.frame.size.height / 2) - Constant.kHandleDiameter / 2, width: Constant.kHandleDiameter, height: Constant.kHandleDiameter))
+        a.append(CGRect.init(x: 0,
+                             y: Int(self.frame.size.height / 2) - Constant.kHandleDiameter / 2,
+                             width: Constant.kHandleDiameter,
+                             height: Constant.kHandleDiameter) )
     
         return a;
     }

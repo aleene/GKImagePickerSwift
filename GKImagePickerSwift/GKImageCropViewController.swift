@@ -107,23 +107,16 @@ open class GKImageCropViewController: UIViewController {
         if UIDevice.current.userInterfaceIdiom == .phone {
             self.toolbar = UIToolbar.init(frame: CGRect.zero)
             if self.toolbar != nil {
-                if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-                    self.toolbar!.isTranslucent = true
-                    self.toolbar!.barStyle = .blackOpaque
-                } else {
-                    self.toolbar!.setBackgroundImage(_toolbarBackgroundImage(), forToolbarPosition: .any, barMetrics: .default)
-                }
+                self.toolbar!.isTranslucent = true
+                self.toolbar!.barStyle = .blackOpaque
                 self.view.addSubview(self.toolbar!)
             }
             self._setupCancelButton()
             self._setupUseButton()
         
+            
             let info = UILabel.init(frame: CGRect.zero)
-            if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-                info.text = "Mode and Scale"
-            } else {
-                info.text = NSLocalizedString("Move and Scale", comment: "GKImoveAndScale")
-            }
+            info.text = NSLocalizedString("Move/Scale", comment: "GKImoveAndScale")
             info.textColor = UIColor.white
             info.backgroundColor = UIColor.clear
             info.shadowColor = UIColor.init(red: 0.827, green: 0.831, blue: 0.839, alpha: 1)
@@ -131,13 +124,11 @@ open class GKImageCropViewController: UIViewController {
             info.font = UIFont.boldSystemFont(ofSize: 18)
             info.sizeToFit()
         
-            // if self.cancelButton != nil || self.useButton != nil {
-                let cancel = UIBarButtonItem.init(customView: self.cancelButton!)
-                let flex = UIBarButtonItem.init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-                let lbl = UIBarButtonItem.init(customView: info)
-                let use = UIBarButtonItem.init(customView: self.useButton!)
-                self.toolbar?.setItems([cancel, flex, lbl, flex, use], animated: false)
-            //}
+            let cancel = UIBarButtonItem.init(customView: self.cancelButton!)
+            let flex = UIBarButtonItem.init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let lbl = UIBarButtonItem.init(customView: info)
+            let use = UIBarButtonItem.init(customView: self.useButton!)
+            self.toolbar?.setItems([cancel, flex, lbl, flex, use], animated: false)
         }
     }
     
@@ -147,7 +138,7 @@ open class GKImageCropViewController: UIViewController {
 
         super.viewDidLoad()
     
-        self.title = NSLocalizedString("Resize", comment: "GKResizePhoto")
+        self.title = NSLocalizedString("Move/Scale", comment: "GKResizePhoto")
     
         if UIDevice.current.userInterfaceIdiom == .phone {
             self.navigationController?.isNavigationBarHidden = true
