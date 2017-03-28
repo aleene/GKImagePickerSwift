@@ -15,15 +15,15 @@ import UIKit
 
 class GKCropBorderView: UIView {
     
-// This class draws the resizable border with its handles
+    // This class draws the resizable border with its handles
     
     private struct Constant {
-        static let kNumberOfBorderHandles = 8
-        static let kHandleDiameter = 24
+        // static let kNumberOfBorderHandles = 8
+        static let kHandleDiameter = 12
     }
     
     private var _calculateAllNeededHandleRects: [Any] = []
-
+    
     // MARK: - inits
     
     override init(frame: CGRect) {
@@ -34,9 +34,9 @@ class GKCropBorderView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - drawing
-
+    
     override func draw(_ rect: CGRect) {
         // Drawing code
         if let ctx = UIGraphicsGetCurrentContext() {
@@ -49,7 +49,7 @@ class GKCropBorderView: UIView {
                 )
             )
             ctx.strokePath()
-    
+            
             let handleRectArray = calculateAllNeededHandleRects()
             for handleRect in handleRectArray {
                 ctx.setFillColor(UIColor.init(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.95).cgColor)
@@ -61,9 +61,9 @@ class GKCropBorderView: UIView {
     // MARK: - private
     
     private func calculateAllNeededHandleRects() -> [CGRect] {
-    
+        
         var a: [CGRect] = []
-
+        
         // upper row
         a.append(CGRect.init(x: 0,
                              y: 0,
@@ -77,7 +77,7 @@ class GKCropBorderView: UIView {
                              y: 0,
                              width: Constant.kHandleDiameter,
                              height: Constant.kHandleDiameter) )
-    
+        
         a.append(CGRect.init(x: Int(self.frame.size.width) - Constant.kHandleDiameter,
                              y: Int(self.frame.size.height / 2) - Constant.kHandleDiameter / 2,
                              width: Constant.kHandleDiameter,
@@ -99,7 +99,7 @@ class GKCropBorderView: UIView {
                              y: Int(self.frame.size.height / 2) - Constant.kHandleDiameter / 2,
                              width: Constant.kHandleDiameter,
                              height: Constant.kHandleDiameter) )
-    
+        
         return a;
     }
     

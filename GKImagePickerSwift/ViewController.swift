@@ -14,6 +14,10 @@ import UIKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate {
     
+    
+    
+    @IBAction func ImageIputDeviceSegmentedControlTapped(_ sender: UISegmentedControl) {
+    }
     @IBOutlet weak var customBarButtonItem: UIBarButtonItem!
     
     @IBAction func customBarButtonItemTapped(_ sender: UIBarButtonItem) {
@@ -47,7 +51,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     
     @IBAction func resizableBarButtonItemTapped(_ sender: UIBarButtonItem) {
         
-        self.imagePicker.cropSize = CGSize.init(width: 200, height: 200)
+        self.imagePicker.cropSize = CGSize.init(width: 200, height: 300)
         self.imagePicker.hasResizeableCropArea = true
         
         self.present(self.imagePicker.imagePickerController!, animated: true, completion: nil)
@@ -62,14 +66,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         picker.delegate = self
         picker.imagePickerController = UIImagePickerController.init()
         picker.imagePickerController!.modalPresentationStyle = .popover
-        picker.sourceType = .photoLibrary
+        picker.sourceType = .camera
 
         return picker
     }()
     
     private lazy var ctr: UIImagePickerController = {
         let controller = UIImagePickerController.init()
-        controller.sourceType = .photoLibrary
+        controller.sourceType = .camera
         controller.delegate = self
         controller.allowsEditing = true
         controller.modalPresentationStyle = .popover

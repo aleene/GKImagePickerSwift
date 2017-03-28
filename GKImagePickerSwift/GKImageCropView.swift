@@ -45,7 +45,7 @@ class GKImageCropView: UIView {
         // view.backgroundColor = .black
         
         return view
-
+        
     } ()
     
     var cropOverlayView: GKImageCropOverlayView? = nil
@@ -60,7 +60,7 @@ class GKImageCropView: UIView {
             self.imageView.image = self.imageToCrop
         }
     }
-
+    
     var cropSize: CGSize = CGSize.zero {
         didSet {
             self.cropOverlayView = hasResizableCropArea ? GKResizeableCropOverlayView.init(frame: self.bounds) : GKImageCropOverlayView.init(frame: self.bounds)
@@ -79,7 +79,7 @@ class GKImageCropView: UIView {
         let rectTransform: CGAffineTransform = _orientationTransformedRectOfImage(img: self.imageToCrop!)
         
         visibleRect = visibleRect.applying(rectTransform)
-    
+        
         //finally crop image
         if let imageRef = (self.imageToCrop!.cgImage)!.cropping(to: visibleRect) {
             return UIImage.init(cgImage: imageRef, scale: self.imageToCrop!.scale, orientation: self.imageToCrop!.imageOrientation)
@@ -93,78 +93,77 @@ class GKImageCropView: UIView {
         sizeScale *= self.scrollView.zoomScale
         
         //then get the position of the cropping rect inside the image
-        print(cropOverlayView?.frame, cropOverlayView?.contentView.frame)
         let visibleRect = self.cropOverlayView?.contentView.convert(self.cropOverlayView!.contentView.bounds, to: imageView)
         let rect = GKScaleRect(rect: visibleRect!, scale: sizeScale)
         return rect
     }
     
     /*
-    private func _calcVisibleRectForResizeableCropArea() -> CGRect {
-        if let resizableView = cropOverlayView as? GKResizeableCropOverlayView {
-    
-            //first of all, get the size scale by taking a look at the real image dimensions. Here it doesn't matter if you take
-            //the width or the hight of the image, because it will always be scaled in the exact same proportion of the real image
-            var sizeScale = self.imageView.image!.size.width / self.imageView.frame.size.width
-            sizeScale *= self.scrollView.zoomScale
-    
-            //then get the position of the cropping rect inside the image
-            
-            let visibleRect = resizableView.contentView.convert(resizableView.contentView.bounds, to: imageView)
-            return GKScaleRect(rect: visibleRect, scale: sizeScale)
-        }
-        return CGRect.zero
-    }
-    
-    private func _calcVisibleRectForCropArea() -> CGRect {
-    //scaled width/height in regards of real width to crop width
-        if let validImageToCrop = self.imageToCrop {
-            let scaleWidth = validImageToCrop.size.width / self.cropSize.width
-            let scaleHeight = validImageToCrop.size.height / self.cropSize.height
-            var scale = CGFloat(0.0)
-    
-            if self.cropSize.width > self.cropSize.height {
-                scale = validImageToCrop.size.width < validImageToCrop.size.height ?
-                    max(scaleWidth, scaleHeight) :
-                    min(scaleWidth, scaleHeight);
-            } else {
-                scale = validImageToCrop.size.width < validImageToCrop.size.height ?
-                    min(scaleWidth, scaleHeight) :
-                    max(scaleWidth, scaleHeight);
-            }
-            
-            //extract visible rect from scrollview and scale it
-            let visibleRect = scrollView.convert(scrollView.bounds, to: imageView)
-            return GKScaleRect(rect: visibleRect, scale: scale)
-        }
-        return CGRect.zero
-    }
+     private func _calcVisibleRectForResizeableCropArea() -> CGRect {
+     if let resizableView = cropOverlayView as? GKResizeableCropOverlayView {
+     
+     //first of all, get the size scale by taking a look at the real image dimensions. Here it doesn't matter if you take
+     //the width or the hight of the image, because it will always be scaled in the exact same proportion of the real image
+     var sizeScale = self.imageView.image!.size.width / self.imageView.frame.size.width
+     sizeScale *= self.scrollView.zoomScale
+     
+     //then get the position of the cropping rect inside the image
+     
+     let visibleRect = resizableView.contentView.convert(resizableView.contentView.bounds, to: imageView)
+     return GKScaleRect(rect: visibleRect, scale: sizeScale)
+     }
+     return CGRect.zero
+     }
+     
+     private func _calcVisibleRectForCropArea() -> CGRect {
+     //scaled width/height in regards of real width to crop width
+     if let validImageToCrop = self.imageToCrop {
+     let scaleWidth = validImageToCrop.size.width / self.cropSize.width
+     let scaleHeight = validImageToCrop.size.height / self.cropSize.height
+     var scale = CGFloat(0.0)
+     
+     if self.cropSize.width > self.cropSize.height {
+     scale = validImageToCrop.size.width < validImageToCrop.size.height ?
+     max(scaleWidth, scaleHeight) :
+     min(scaleWidth, scaleHeight);
+     } else {
+     scale = validImageToCrop.size.width < validImageToCrop.size.height ?
+     min(scaleWidth, scaleHeight) :
+     max(scaleWidth, scaleHeight);
+     }
+     
+     //extract visible rect from scrollview and scale it
+     let visibleRect = scrollView.convert(scrollView.bounds, to: imageView)
+     return GKScaleRect(rect: visibleRect, scale: scale)
+     }
+     return CGRect.zero
+     }
      */
     
     
     private func _orientationTransformedRectOfImage(img: UIImage) -> CGAffineTransform {
-    // {
+        // {
         var rectTransform = CGAffineTransform()
         switch (img.imageOrientation) {
-            case .left:
-                rectTransform = CGAffineTransform(rotationAngle: rad(90)).translatedBy(x: 0, y: -img.size.height);
-                break
-            case .right:
-                rectTransform = CGAffineTransform(rotationAngle: rad(-90)).translatedBy(x: -img.size.width, y: 0);
-                break
-            case .down:
-                rectTransform = CGAffineTransform(rotationAngle: rad(-180)).translatedBy(x: -img.size.width, y: -img.size.height);
-                break
-            default:
-                rectTransform = .identity;
+        case .left:
+            rectTransform = CGAffineTransform(rotationAngle: rad(90)).translatedBy(x: 0, y: -img.size.height);
+            break
+        case .right:
+            rectTransform = CGAffineTransform(rotationAngle: rad(-90)).translatedBy(x: -img.size.width, y: 0);
+            break
+        case .down:
+            rectTransform = CGAffineTransform(rotationAngle: rad(-180)).translatedBy(x: -img.size.width, y: -img.size.height);
+            break
+        default:
+            rectTransform = .identity;
         }
-    
+        
         return rectTransform.scaledBy(x: img.scale, y: img.scale);
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         self.isUserInteractionEnabled = true
         self.addSubview(scrollView)
         self.scrollView.addSubview(imageView)
@@ -177,9 +176,9 @@ class GKImageCropView: UIView {
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         if hasResizableCropArea {
-        
+            
             if let resizeableCropView: GKResizeableCropOverlayView = cropOverlayView as? GKResizeableCropOverlayView {
-        
+                
                 let outerFrame = resizeableCropView.cropBorderView.frame.insetBy(dx: -10, dy: -10)
                 if outerFrame.contains(point) {
                     if (resizeableCropView.cropBorderView.frame.size.width < 60 || resizeableCropView.cropBorderView.frame.size.height < 60 ) {
@@ -189,12 +188,12 @@ class GKImageCropView: UIView {
                     if innerTouchFrame.contains(point) {
                         return scrollView
                     }
-                
+                    
                     let outBorderTouchFrame = resizeableCropView.cropBorderView.frame.insetBy(dx: -10, dy: -10)
                     if outBorderTouchFrame.contains(point) {
                         return super.hitTest(point, with: event)
                     }
-            
+                    
                     return super.hitTest(point, with: event)
                 }
             }
@@ -202,6 +201,9 @@ class GKImageCropView: UIView {
         return scrollView;
     }
     
+    private struct Constant {
+        static let BorderCorrectionValue = CGFloat(12.0)
+    }
     func layoutSubViews() {
         super.layoutSubviews()
         
@@ -213,21 +215,24 @@ class GKImageCropView: UIView {
         var faktoredHeight = CGFloat(0.0)
         var faktoredWidth = CGFloat(0.0)
         
+        let correctedWidth = self.bounds.width - 2 * Constant.BorderCorrectionValue // width corrected for the handles
+        let correctedHeight = self.bounds.height - 2 * Constant.BorderCorrectionValue - toolbarHeight// width corrected for the handles
+        
         // print("cropSize", cropSize, imageToCrop!.size)
         if self.imageToCrop!.size.width > self.imageToCrop!.size.height {
-            faktor = self.imageToCrop!.size.width / self.bounds.width;
-            faktoredWidth = self.bounds.width
+            faktor = self.imageToCrop!.size.width / correctedWidth;
+            faktoredWidth = correctedWidth
             faktoredHeight =  self.imageToCrop!.size.height / faktor
             self.yOffset = toolbarHeight  // ( faktoredHeight - self.scrollView.bounds.size.height ) / 2
-
+            
         } else {
-            faktor = self.imageToCrop!.size.height / ( self.bounds.height - toolbarHeight )
+            faktor = self.imageToCrop!.size.height / correctedHeight
             faktoredWidth = self.imageToCrop!.size.width / faktor
-            faktoredHeight =  self.bounds.height - toolbarHeight
+            faktoredHeight =  correctedHeight
             self.yOffset = toolbarHeight // ( faktoredHeight - self.scrollView.bounds.size.height ) / 2
         }
- 
-
+        
+        
         self.cropOverlayView?.frame = self.bounds // do NOT correct for the toolbar, it will be done in the class
         // the scrollView is the size of the visible view
         self.scrollView.frame = CGRect.init(x: 0, y: toolbarHeight, width: self.bounds.width, height: self.bounds.height - toolbarHeight) // CGRect.init(x: self.xOffset, y: self.yOffset, width: cropSize.width, height: cropSize.height)
@@ -235,21 +240,21 @@ class GKImageCropView: UIView {
         self.scrollView.contentSize = imageView.image!.size // CGSize.init(width: self.cropSize.width, height: self.cropSize.height)
         // The image should fit the scrollview (aspectFit)
         self.xOffset = 0 // ( faktoredWidth - self.scrollView.bounds.size.width ) / 2
-        self.imageView.frame = CGRect.init(x: 0, y: 0, width: faktoredWidth, height: faktoredHeight)
+        self.imageView.frame = CGRect.init(x: Constant.BorderCorrectionValue, y: Constant.BorderCorrectionValue, width: faktoredWidth, height: faktoredHeight)
         // move the content of the scrollView, so the image is centered in the window
         self.scrollView.contentOffset = CGPoint.init(x: self.xOffset, y: self.yOffset)
         // print("offset",xOffset,yOffset)
         // print("scroll",scrollView.frame, scrollView.bounds)
         // print("image",imageView.frame,imageView.bounds)
         // If this is not set the app will crash upon pinch
-        self.scrollView.minimumZoomScale = 1 // scrollView.frame.width / imageView.frame.width
+        self.scrollView.minimumZoomScale = 0.2 // scrollView.frame.width / imageView.frame.width
     }
     
     
 }
 
 extension GKImageCropView: UIScrollViewDelegate {
-
+    
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }

@@ -13,7 +13,7 @@
 import UIKit
 
 class ScrollView: UIScrollView {
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -37,5 +37,5 @@ class ScrollView: UIScrollView {
             zoomView.frame = frameToCenter
         }
     }
-
+    
 }

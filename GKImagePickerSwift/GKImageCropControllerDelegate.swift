@@ -16,7 +16,7 @@ import UIKit
 public protocol GKImageCropControllerDelegate {
     
     func imageCropController(_ imageCropController: GKImageCropViewController, didFinishWith croppedImage: UIImage?)
-
+    
 }
 
 // This is the default implementation in case the protocol function is optional

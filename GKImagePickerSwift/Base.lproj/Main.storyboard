@@ -37,11 +37,23 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="3ln-D3-j7V">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" title="Apple" id="dgk-LF-uZT">
                             <connections>
                                 <action selector="appleBarButtonItemTapped:" destination="BYZ-38-t0r" id="Aqe-e6-KKO"/>
                             </connections>
                         </barButtonItem>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" id="yFV-nn-YTx">
+                            <rect key="frame" x="113" y="7" width="98" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Cam"/>
+                                <segment title="Roll"/>
+                            </segments>
+                            <connections>
+                                <action selector="ImageIputDeviceSegmentedControlTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="nmn-Q5-K0V"/>
+                            </connections>
+                        </segmentedControl>
                         <rightBarButtonItems>
                             <barButtonItem title="Resizable" id="Bfp-Ly-vwq">
                                 <connections>

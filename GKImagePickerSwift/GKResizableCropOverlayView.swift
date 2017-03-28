@@ -43,7 +43,7 @@ class GKResizeableCropOverlayView: GKImageCropOverlayView {
         if !_resizingEnabled { return }
         _resizeWithTouchPoint(point: touches.first!.location(in: superview!))
     }
-
+    
     override var initialCropSize: CGSize {
         didSet {
             super.initialCropSize = initialCropSize
@@ -74,7 +74,7 @@ class GKResizeableCropOverlayView: GKImageCropOverlayView {
     private var _startPoint = CGPoint.zero
     private var _resizeMultiplyer = GKResizeableViewBorderMultiplyer()
     
-    private let kBorderCorrectionValue = CGFloat(12.0)
+    private let kBorderCorrectionValue = CGFloat(6.0)
     
     private struct GKResizeableViewBorderMultiplyer {
         
@@ -94,10 +94,10 @@ class GKResizeableCropOverlayView: GKImageCropOverlayView {
             height: self.initialCropSize.height))
         self.addSubview(cropBorderView)
     }
-
+    
     private func _calcuateWhichBorderHandleIsTheAnchorPointFromHere(anchorPoint: CGPoint) -> CGPoint {
         let allHandles: [CGPoint] = _getAllCurrentHandlePositions()
-    
+        
         var closest = 3000.0
         var theRealAnchor: CGPoint? = nil
         for handle in allHandles {
@@ -109,11 +109,11 @@ class GKResizeableCropOverlayView: GKImageCropOverlayView {
         }
         return theRealAnchor!
     }
-
-    private func _getAllCurrentHandlePositions() -> [CGPoint] {
     
+    private func _getAllCurrentHandlePositions() -> [CGPoint] {
+        
         var a: [CGPoint] = []
-
+        
         //again starting with the upper left corner and then following the rect clockwise
         a.append( CGPoint.zero )
         a.append( CGPoint.init(x: cropBorderView.bounds.size.width / 2,
@@ -130,12 +130,12 @@ class GKResizeableCropOverlayView: GKImageCropOverlayView {
                                y: cropBorderView.bounds.size.height ) )
         a.append( CGPoint.init(x: 0.0,
                                y: cropBorderView.bounds.size.height / 2 ) )
-    
+        
         return a
     }
-
+    
     private func _resizeWithTouchPoint(point: CGPoint) {
-
+        
         //prevent going offscreen...
         let border = kBorderCorrectionValue * 2
         
@@ -144,22 +144,22 @@ class GKResizeableCropOverlayView: GKImageCropOverlayView {
         newPoint.y = point.y < border ? border : point.y;
         newPoint.x = point.x > self.bounds.size.width - border ? self.bounds.size.width - border : point.x;
         newPoint.y = point.y > self.bounds.size.height - border ? self.bounds.size.height - border : point.y;
-    
+        
         let heightChange = (newPoint.y - _startPoint.y) * _resizeMultiplyer.heightMultiplyer
         let widthChange = (_startPoint.x - newPoint.x) * _resizeMultiplyer.widthMultiplyer
         let xChange = -1 * widthChange * _resizeMultiplyer.xMultiplyer
         let yChange = -1 * heightChange * _resizeMultiplyer.yMultiplyer
-    
+        
         var newFrame = CGRect.init(x: cropBorderView.frame.origin.x + xChange,
                                    y: cropBorderView.frame.origin.y + yChange,
                                    width: cropBorderView.frame.size.width + widthChange,
                                    height: cropBorderView.frame.size.height + heightChange)
-    
+        
         newFrame = _preventBorderFrameFromGettingTooSmallOrTooBig(frame: newFrame)
         _setAllFrames(to: newFrame)
         _startPoint = newPoint;
-}
-
+    }
+    
     struct Constant {
         struct CropSize {
             static let MinimumWidth = CGFloat(64)
@@ -172,7 +172,7 @@ class GKResizeableCropOverlayView: GKImageCropOverlayView {
         // keep the cropped frame within the view
         
         var adaptedFrame = frame
-    
+        
         // resist against making the width to small
         if adaptedFrame.size.width < Constant.CropSize.MinimumWidth {
             adaptedFrame.size.width = Constant.CropSize.MinimumWidth
@@ -182,34 +182,34 @@ class GKResizeableCropOverlayView: GKImageCropOverlayView {
         if adaptedFrame.size.height < Constant.CropSize.MinimumHeight {
             adaptedFrame.size.height = Constant.CropSize.MinimumWidth
         }
-    
+        
         // off screen left
         if adaptedFrame.origin.x < 0 {
             adaptedFrame.origin.x = kBorderCorrectionValue
             // keep the right size in place
             adaptedFrame.size.width = frame.size.width - (adaptedFrame.origin.x - frame.origin.x)
         }
-    
+        
         // offscreen top
         if adaptedFrame.origin.y < toolbarSize {
             adaptedFrame.origin.y = toolbarSize + kBorderCorrectionValue
             // keep the bottom side in place
             adaptedFrame.size.height = frame.size.height - (adaptedFrame.origin.y - frame.origin.y)
         }
-    
+        
         // off screen right
         if adaptedFrame.size.width + adaptedFrame.origin.x > self.frame.size.width - self.kBorderCorrectionValue {
             adaptedFrame.size.width = self.frame.size.width - self.kBorderCorrectionValue - adaptedFrame.origin.x
         }
-    
+        
         // offscreen bottom
         if adaptedFrame.size.height + adaptedFrame.origin.y > self.frame.size.height - self.kBorderCorrectionValue {
             adaptedFrame.size.height = self.frame.size.height - self.kBorderCorrectionValue - adaptedFrame.origin.y
         }
-
+        
         return adaptedFrame
     }
-
+    
     private func _setAllFrames(to frame: CGRect) {
         cropBorderView.frame = frame
         contentView.frame = frame.insetBy(dx: kBorderCorrectionValue, dy: kBorderCorrectionValue)
@@ -217,25 +217,25 @@ class GKResizeableCropOverlayView: GKImageCropOverlayView {
         setNeedsDisplay()
         cropBorderView.setNeedsDisplay()
     }
-
+    
     private func _fillMultiplyer() {
-            //-1 left, 0 middle, 1 right
+        //-1 left, 0 middle, 1 right
         _resizeMultiplyer.heightMultiplyer =  (_theAnchor.y == 0 ? -1 : (_theAnchor.y == cropBorderView.bounds.size.height) ? 1 : 0);
-            //-1 up, 0 middle, 1 down
+        //-1 up, 0 middle, 1 down
         _resizeMultiplyer.widthMultiplyer = (_theAnchor.x == 0 ? 1 : (_theAnchor.x == cropBorderView.bounds.size.width) ? -1 : 0);
-            // 1 left, 0 middle, 0 right
+        // 1 left, 0 middle, 0 right
         _resizeMultiplyer.xMultiplyer = (_theAnchor.x == 0 ? 1 : 0);
-            // 1 up, 0 middle, 0 down
+        // 1 up, 0 middle, 0 down
         _resizeMultiplyer.yMultiplyer = (_theAnchor.y == 0 ? 1 : 0);
     }
-
-//  MARK: - drawing
+    
+    //  MARK: - drawing
     
     // Inside the crop border one can see the image, outside it is grayed out
     override func draw(_ rect: CGRect) {
         UIColor.init(colorLiteralRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.5).set()
         UIRectFill(self.bounds);
-    
+        
         UIColor.clear.set()
         UIRectFill(self.contentView.frame);
     }

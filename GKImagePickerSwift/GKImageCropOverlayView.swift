@@ -35,13 +35,13 @@ class GKImageCropOverlayView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     var toolbarSize: CGFloat {
         get {
             return UIDevice.current.userInterfaceIdiom == .pad ? CGFloat(44.0) : CGFloat(54.0)
         }
     }
-
+    
     var contentViewFrame: CGRect {
         get {
             return CGRect.init(
@@ -51,12 +51,12 @@ class GKImageCropOverlayView: UIView {
                 height: self.initialCropSize.height)
         }
     }
-
+    
     var contentView: UIView = {
         return UIView.init(frame: CGRect.zero)
     } ()
     
-
+    
     var initialCropSize: CGSize = CGSize.zero {
         didSet {
             contentView.frame = contentViewFrame
@@ -68,7 +68,7 @@ class GKImageCropOverlayView: UIView {
     // An empty implementation adversely affects performance during animation.
     
     override func draw(_ rect: CGRect) {
-        let toolbarSize: CGFloat = UI_USER_INTERFACE_IDIOM() == .pad ? 0.0 : 54.0
+        let toolbarSize: CGFloat = UI_USER_INTERFACE_IDIOM() == .pad ? 44.0 : 54.0
         
         let width = frame.width
         let height = frame.height - toolbarSize
@@ -88,21 +88,7 @@ class GKImageCropOverlayView: UIView {
         UIColor.clear.set()
         UIRectFill(CGRect.init(x: widthSpan, y: heightSpan, width: cropSize.width, height: cropSize.height))
         
-        
-// if heightSpan > 30 && (UIDevice.current.userInterfaceIdiom == .pad) {
-            // UIColor.white.set()
-            
-            // let stringToDraw = NSLocalizedString("Move and scale", comment: "GKIMoveAndScale") as NSString
-            // stringToDraw.draw(in: CGRect.init(x: 10.0, y: (height - heightSpan) + (heightSpan / 2 - CGFloat(20.0) / 2), width: width - CGFloat(20.0), height: 20.0),
-            //                  withAttributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20.0)] )
-                                // , NSLineBreakMode: .byTruncatingTail])
-            
-            //[NSLocalizedString(@"GKImoveAndScale", @"") drawInRect:CGRectMake(10, (height - heightSpan) + (heightSpan / 2 - 20 / 2) , width - 20, 20)
-            //    withFont:[UIFont boldSystemFontOfSize:20]
-            //    lineBreakMode:NSLineBreakByTruncatingTail
-            //    alignment:NSTextAlignmentCenter];
-// }
     }
-
+    
 }
 

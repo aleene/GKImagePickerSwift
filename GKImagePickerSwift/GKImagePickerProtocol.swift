@@ -38,7 +38,7 @@ public protocol GKImagePickerDelegate {
 // This is the default implementation for these optional delegate methods
 
 extension GKImagePickerDelegate {
-
+    
     func imagePicker(_ imagePicker: GKImagePicker, cropped image: UIImage) { }
     
     func imagePickerDidCancel(_ imagePicker: GKImagePicker) { }
