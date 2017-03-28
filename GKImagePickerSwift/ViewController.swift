@@ -14,15 +14,23 @@ import UIKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate {
     
-    
+    var usedDevice: UIImagePickerControllerSourceType = .camera
     
     @IBAction func ImageIputDeviceSegmentedControlTapped(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            usedDevice = .camera
+        default:
+            usedDevice = .photoLibrary
+        }
     }
+    
     @IBOutlet weak var customBarButtonItem: UIBarButtonItem!
     
     @IBAction func customBarButtonItemTapped(_ sender: UIBarButtonItem) {
         self.imagePicker.cropSize = CGSize.init(width: 200, height: 100)
         self.imagePicker.hasResizeableCropArea = false
+        self.imagePicker.sourceType = usedDevice
         
         //
         // http://www.thomashanning.com/uipopoverpresentationcontroller/
@@ -39,6 +47,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     
     @IBAction func appleBarButtonItemTapped(_ sender: UIBarButtonItem) {
         
+        self.ctr.sourceType = self.usedDevice
         self.present(self.ctr, animated: true, completion: nil)
         if let popoverPresentationController = self.ctr.popoverPresentationController {
             popoverPresentationController.sourceView = self.view
@@ -53,7 +62,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         
         self.imagePicker.cropSize = CGSize.init(width: 200, height: 300)
         self.imagePicker.hasResizeableCropArea = true
-        
+        self.imagePicker.sourceType = usedDevice
+
         self.present(self.imagePicker.imagePickerController!, animated: true, completion: nil)
         if let popoverPresentationController = self.imagePicker.imagePickerController!.popoverPresentationController {
             popoverPresentationController.sourceView = self.view
